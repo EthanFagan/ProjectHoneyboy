@@ -1,0 +1,8 @@
+BeeBack Flap = 0 0 32 32
+BeeDead = 33 0 32 32
+BeeFront Flap = 66 0 32 32
+BeeFront = 0 33 32 32
+BeeLeft Flap = 33 33 32 32
+BeeLeft = 0 66 32 32
+BeeRight Flap = 33 66 32 32
+BeeRight = 66 33 32 32
