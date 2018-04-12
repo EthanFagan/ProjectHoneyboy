@@ -12,7 +12,7 @@ class worldSquare
 
 	sf::Texture m_worldSqTexture;	   //the texture for the worldSquare
 	sf::Texture m_emptySqTexture;	   //the texture for the empty square
-	sf::Texture m_whiteSqTexture;
+	sf::Texture m_floorSqTexture;
 
 	sf::Vector2f m_position;
 

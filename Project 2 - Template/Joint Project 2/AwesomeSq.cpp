@@ -115,16 +115,30 @@ void AwesomeSq::kick(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 		{
 			if (t_blockArray[m_playerRow - 2][m_playerCol].isAWall() == false)
 			{
-				t_blockArray[m_playerRow - 1][m_playerCol].makeEmpty();
-				t_blockArray[m_playerRow - 2][m_playerCol].makeAWall(); //NORTH
+				t_blockArray[m_playerRow - 1][m_playerCol].makeAFloor();
+				if (t_blockArray[m_playerRow - 2][m_playerCol].isEmpty() == true)
+				{
+					t_blockArray[m_playerRow - 2][m_playerCol].makeAFloor();
+				}
+				else
+				{
+					t_blockArray[m_playerRow - 2][m_playerCol].makeAWall();
+				}
 			}
 		}
 		else if (m_playerDirection == EAST && t_blockArray[m_playerRow + 1][m_playerCol].isAWall() == true)
 		{
 			if (t_blockArray[m_playerRow + 2][m_playerCol].isAWall() == false)
 			{
-				t_blockArray[m_playerRow + 1][m_playerCol].makeEmpty();
-				t_blockArray[m_playerRow + 2][m_playerCol].makeAWall(); //SOUTH
+				t_blockArray[m_playerRow + 1][m_playerCol].makeAFloor();
+				if (t_blockArray[m_playerRow + 2][m_playerCol].isEmpty() == true)
+				{
+					t_blockArray[m_playerRow + 2][m_playerCol].makeAFloor();
+				}
+				else
+				{
+					t_blockArray[m_playerRow + 2][m_playerCol].makeAWall();
+				}
 			}
 			
 		}
@@ -132,18 +146,31 @@ void AwesomeSq::kick(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 		{
 			if (t_blockArray[m_playerRow][m_playerCol + 2].isAWall() == false)
 			{
-				t_blockArray[m_playerRow][m_playerCol + 1].makeEmpty();
-				t_blockArray[m_playerRow][m_playerCol + 2].makeAWall(); //EAST
+				t_blockArray[m_playerRow][m_playerCol + 1].makeAFloor();
+				if (t_blockArray[m_playerRow][m_playerCol + 2].isEmpty() == true)
+				{
+					t_blockArray[m_playerRow][m_playerCol + 2].makeAFloor();
+				}
+				else
+				{
+					t_blockArray[m_playerRow][m_playerCol + 2].makeAWall();
+				}
 			}
 		}
 		else if (m_playerDirection == NORTH && t_blockArray[m_playerRow ][m_playerCol - 1].isAWall() == true)
 		{
 			if (t_blockArray[m_playerRow][m_playerCol - 2].isAWall() == false)
 			{
-				t_blockArray[m_playerRow][m_playerCol - 1].makeEmpty();
-				t_blockArray[m_playerRow][m_playerCol - 2].makeAWall(); //WEST
+				t_blockArray[m_playerRow][m_playerCol - 1].makeAFloor();
+				if (t_blockArray[m_playerRow][m_playerCol - 2].isEmpty() == true)
+				{
+					t_blockArray[m_playerRow][m_playerCol - 2].makeAFloor();
+				}
+				else
+				{
+					t_blockArray[m_playerRow][m_playerCol - 2].makeAWall();
+				}
 			}
-			
 		}
 	}
 }

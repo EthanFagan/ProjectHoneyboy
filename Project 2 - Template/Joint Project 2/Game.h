@@ -25,6 +25,7 @@ class Game
 	// put your game objects here eg AwesomeSq object and 1D array of EvilSq objects etc.
 
 	sf::RenderWindow window;
+	
 
 	worldSquare walls[MAX_ROWS][MAX_COL];
 
@@ -34,9 +35,14 @@ class Game
 
 public:
 	sf::Font m_font;  // font for writing text
-	sf::Text m_message[2];  // text to write on the screen
+	sf::Text m_message[3];  // text to write on the screen
+
+	sf::Sprite m_gravestone;
+	sf::Texture m_gravestoneTex;
 
 	int m_amountOfEnemiesLeft = 0;
+	int m_currentLevel;
+	int m_lives;
 
 public:	  // declaration of member functions	
 	Game();  // default constructor
@@ -45,9 +51,15 @@ public:	  // declaration of member functions
 	void	update();
 	void	draw();
 	void	setUpMaze();
+	void    setUpLevel1();
+	void    setUpLevel2();
+	void    setUpLevel3();
 	void    setUpEnemies();
 	void	drawMaze();
-	void    playerDeath();
+	void    deaths();
+	void    changeLevel(int t_newLevel);
+	void    levelComplete();
+	void    gameOver();
 	void    countBees();
 	void    drawEnemies(sf::RenderWindow &t_window);
 };

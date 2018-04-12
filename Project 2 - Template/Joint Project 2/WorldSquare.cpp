@@ -8,16 +8,16 @@ worldSquare::worldSquare()
 	{
 		std::cout << "Texture not loaded" << std::endl;
 	}
-	if (!m_emptySqTexture.loadFromFile("ASSETS/IMAGES/block.PNG"))
+	if (!m_emptySqTexture.loadFromFile("ASSETS/IMAGES/emptyBlock.png"))
 	{
 		std::cout << "Texture not loaded" << std::endl;
 	}
-	if (!m_whiteSqTexture.loadFromFile("ASSETS/IMAGES/emptyBlock.png"))
+	if (!m_floorSqTexture.loadFromFile("ASSETS/IMAGES/block.PNG"))
 	{
 		std::cout << "Texture not loaded" << std::endl;
 	}
 
-	m_Worldsprite.setTexture(m_whiteSqTexture);
+	m_Worldsprite.setTexture(m_floorSqTexture);
 }
 void worldSquare::update()
 {
@@ -31,7 +31,7 @@ void worldSquare::update()
 	}
 	else if (m_isEmpty == true)
 	{
-		m_Worldsprite.setTexture(m_whiteSqTexture);
+		m_Worldsprite.setTexture(m_floorSqTexture);
 	}
 }
 void worldSquare::draw(sf::RenderWindow &t_window)

@@ -52,10 +52,21 @@ Game::Game() : window(sf::VideoMode(416, 416), "Project 2")
 void Game::LoadContent()
 // load the font file & set up message
 {
+	//sets up font
 	if (!m_font.loadFromFile("ASSETS/FONTS/BebasNeue.otf"))
 	{
 		std::cout << "error with font file file";
 	}
+	//-----Sets up gravestone for use in death animation
+	if (!m_gravestoneTex.loadFromFile("ASSETS/IMAGES/Death Image.png"))
+	{
+		std::cout << "error with image file";
+	}
+	m_gravestone.setTexture(m_gravestoneTex);
+	//------------------------------------------------------
+
+	m_lives = 3;// sets the players total lives
+	m_currentLevel = LEVEL_ONE;
 	
 	// set up the message string 
 	for (int i = 0; i < 2; i++)
@@ -68,6 +79,11 @@ void Game::LoadContent()
 	}
 	m_message[0].setPosition(150, 0);  // its position on the screen
 	m_message[1].setPosition(125, 385);
+	m_message[2].setPosition(150, 160);
+	m_message[2].setCharacterSize(20);
+	m_message[2].setFillColor(sf::Color::Red);
+	m_message[2].setOutlineColor(sf::Color(255, 84, 0));
+	m_message[2].setOutlineThickness(4);
 }
 
 
@@ -84,6 +100,7 @@ void Game::run()
 	clock.restart();
 	setUpMaze();
 	setUpEnemies();
+	
 	m_message[0].setString("H O N E Y B O Y");
 	m_message[1].setString("Remaining enemies : " + std::to_string(m_amountOfEnemiesLeft));
 
@@ -133,9 +150,9 @@ void Game::update()
 		enemies[i].update(walls);// updates the enemies on screen
 	}
 	player.update(walls);// updates the player
-	playerDeath();
+	deaths();
 	m_message[1].setString("Remaining enemies : " + std::to_string(m_amountOfEnemiesLeft));
-	countBees();
+	
 
 }
 
@@ -144,64 +161,146 @@ void Game::draw()
 {
 	// Clear the screen and draw your game sprites
 	window.clear();
-	drawMaze();
-	drawEnemies(window);
+	if (m_currentLevel != GAME_OVER)
+	{
+		drawMaze();
+		drawEnemies(window);
+
+		window.draw(m_message[0]);  // write message to the screen
+		window.draw(m_message[1]);
+		player.draw(window);
+		player.setPosition(sf::Vector2f(200, 200));
+	}
 	
-	window.draw(m_message[0]);  // write message to the screen
-	window.draw(m_message[1]);
-	player.draw(window);
 	player.setPosition(sf::Vector2f(200, 200));
 	window.display();
 }
 
 void Game::setUpMaze()
 {
+	//----SETS UP MAZE------------------------------
+	if (m_currentLevel == LEVEL_ONE)
+	{
+		setUpLevel1();
+	}
+	else if (m_currentLevel == LEVEL_TWO)
+	{
+		setUpLevel2();
+	}
+	else if (m_currentLevel == LEVEL_THREE)
+	{
+		setUpLevel3();
+	}
+	for (int row = 0; row < MAX_ROWS; row++)
+	{
+		for (int col = 0; col < MAX_COL; col++)
+		{
+			walls[row][col].setPosition(sf::Vector2f(32 * row, 32 * col));
+		}
+
+	}
+}
+
+void Game::setUpLevel1()
+{
 	for (int row = 0; row < MAX_ROWS; row++)
 	{
 		for (int col = 0; col < MAX_COL; col++)
 		{
 			//----SETS UP BOUNDARY--------------------------
-			if (row == 0 || row == MAX_ROWS -1)
+			if (row == 0 || row == MAX_ROWS - 1)
 			{
 				walls[row][col].makeAWall();
 			}
-			if (col == 0 || col == MAX_COL -1)
+			else if (col == 0 || col == MAX_COL - 1)
 			{
 				walls[row][col].makeAWall();
 			}
-			//----SETS UP MAZE------------------------------
-			if (col == 1 && row == 9)
+			else if (col == 5 && row == 6)
+			{
+				walls[row][col].makeEmpty();
+			}
+			else if (col == 1 && row == 9)
 			{
 				walls[row][col].makeAWall();
 			}
-			if (col == 2 && row > 0 && row < 6)
+			else if (col == 2 && row > 0 && row < 6)
 			{
 				walls[row][col].makeAWall();
 			}
-			if (col == 2 && row > 6 && row < MAX_ROWS)
+			else if (col == 2 && row > 6 && row < MAX_ROWS)
 			{
 				walls[row][col].makeAWall();
 			}
-			if (col == 4 && row > 4 && row < 8)
+			else if (col == 4 && row > 4 && row < 8)
 			{
 				walls[row][col].makeAWall();
 			}
-			if (row == 8 && col > 4 && col < 10)
+			else if (row == 8 && col > 4 && col < 10)
 			{
 				walls[row][col].makeAWall();
 			}
-			if (row == 4 && col > 4 && col < 10)
+			else if (row == 4 && col > 4 && col < 10)
 			{
 				walls[row][col].makeAWall();
 			}
-			if (row == 10 && col == 11 || row == 2 && col == 11)
+			else if (row == 10 && col == 11 || row == 2 && col == 11)
 			{
 				walls[row][col].makeAWall();
 			}
-			walls[row][col].setPosition(sf::Vector2f(32 * row, 32 * col));
+			else
+			{
+				walls[row][col].makeAFloor();
+			}
 		}
-
 	}
+}
+
+void Game::setUpLevel2()
+{
+	for (int row = 0; row < MAX_ROWS; row++)
+	{
+		for (int col = 0; col < MAX_COL; col++)
+		{
+			//----SETS UP BOUNDARY--------------------------
+			if (row == 0 || row == MAX_ROWS - 1)
+			{
+				walls[row][col].makeAWall();
+			}
+			else if (col == 0 || col == MAX_COL - 1)
+			{
+				walls[row][col].makeAWall();
+			}
+			else
+			{
+				walls[row][col].makeAFloor();
+			}
+		}
+	}
+}
+
+void Game::setUpLevel3()
+{
+	for (int row = 0; row < MAX_ROWS; row++)
+	{
+		for (int col = 0; col < MAX_COL; col++)
+		{
+			//----SETS UP BOUNDARY--------------------------
+			if (row == 0 || row == MAX_ROWS - 1)
+			{
+				walls[row][col].makeAWall();
+			}
+			else if (col == 0 || col == MAX_COL - 1)
+			{
+				walls[row][col].makeAWall();
+			}
+			else
+			{
+				walls[row][col].makeAFloor();
+			}
+		}
+	}
+
 }
 
 void Game::setUpEnemies()
@@ -214,6 +313,7 @@ void Game::setUpEnemies()
 				enemies[i].setRow(3);
 				enemies[i].setDirection(SOUTH);
 				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
 			}
 			if (i == 1)
 			{
@@ -221,6 +321,7 @@ void Game::setUpEnemies()
 				enemies[i].setRow(11);
 				enemies[i].setDirection(WEST);
 				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
 			}
 			if (i == 2)
 			{
@@ -228,6 +329,7 @@ void Game::setUpEnemies()
 				enemies[i].setRow(4);
 				enemies[i].setDirection(EAST);
 				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
 			}
 			if (i == 3)
 			{
@@ -235,6 +337,7 @@ void Game::setUpEnemies()
 				enemies[i].setRow(6);
 				enemies[i].setDirection(WEST);
 				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
 			}
 			if (i == 4)
 			{
@@ -242,6 +345,7 @@ void Game::setUpEnemies()
 				enemies[i].setRow(9);
 				enemies[i].setDirection(EAST);
 				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
 			}
 			if (i == 5)
 			{
@@ -249,6 +353,7 @@ void Game::setUpEnemies()
 				enemies[i].setRow(4);
 				enemies[i].setDirection(SOUTH);
 				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
 			}
 	}
 }
@@ -264,17 +369,41 @@ void Game::drawMaze()
 	}
 }
 
-void Game::playerDeath()
+void Game::deaths()
 {
 	for (int i = 0; i < MAX_ENEMIES; i++)
 	{
 		if ((player.getRow() == enemies[i].getRow()) && (player.getcol() == enemies[i].getCol()) && enemies[i].getIsAlive() == true)
 		{
+			m_amountOfEnemiesLeft = 0;
+			m_currentLevel = LEVEL_TWO;
 			setUpEnemies();
+			setUpMaze();
 			player.setRow(1);
 			player.setCol(1);
 		}
+		if (walls[enemies[i].getRow()][enemies[i].getCol()].isAWall() == true)
+		{
+			if (enemies[i].getIsAlive() == true)
+			{
+				m_amountOfEnemiesLeft--;
+				enemies[i].die();
+			}
+		}
 	}
+}
+
+void Game::changeLevel(int t_newLevel)
+{
+	m_currentLevel = t_newLevel;
+}
+
+void Game::levelComplete()
+{
+}
+
+void Game::gameOver()
+{
 }
 
 void Game::countBees()
@@ -291,7 +420,7 @@ void Game::countBees()
 
 void Game::drawEnemies(sf::RenderWindow &t_window)
 {
-	for (int i = 0; i < m_amountOfEnemiesLeft; i++)
+	for (int i = 0; i < MAX_ENEMIES; i++)
 	{
 		if (enemies[i].getIsAlive() == true)
 		{

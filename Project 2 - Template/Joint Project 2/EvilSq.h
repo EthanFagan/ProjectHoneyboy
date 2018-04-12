@@ -39,7 +39,7 @@ public:
 	void setIsAlive();
 	void changeDirection(worldSquare t_blockArray[MAX_ROWS][MAX_COL]); //moves the evil square in the direction it is facing until it reaches a worldSquare or boundary, then change direction.Boundary checking can be done in the move function.
 	void move();
-	void die(worldSquare t_blockArray[MAX_ROWS][MAX_COL]); //if the enemy is hit by a worldSquare pushed by the player, the enemy will die.
+	void die(); //if the enemy is hit by a worldSquare pushed by the player, the enemy will die.
 	void animation();
 	void respawn(); //causes the enemy to reappear on the maze at starting position
 

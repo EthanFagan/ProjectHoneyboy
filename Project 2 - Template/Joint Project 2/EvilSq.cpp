@@ -25,7 +25,6 @@ void EvilSq::update(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 	if (m_isEnemyAlive == true)
 	{
 		changeDirection(t_blockArray);
-		die(t_blockArray);
 		move();
 		animation();
 	}
@@ -114,12 +113,9 @@ void EvilSq::move()
 	}
 }
 
-void EvilSq::die(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
+void EvilSq::die()
 {
-	if (t_blockArray[m_enemyRow][m_enemyCol].isAWall() == true)
-	{
 		m_isEnemyAlive = false;
-	}
 }
 
 void EvilSq::changeDirection(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
