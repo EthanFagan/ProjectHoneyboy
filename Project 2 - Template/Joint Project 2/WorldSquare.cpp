@@ -23,21 +23,21 @@ void worldSquare::update()
 {
 	if (m_isAWall == true)
 	{
-		m_Worldsprite.setTexture(m_worldSqTexture);
+		m_Worldsprite.setTexture(m_worldSqTexture);// sets wall texture
 	}
 	else if (m_isFloor == true)
 	{
-		m_Worldsprite.setTexture(m_emptySqTexture);
+		m_Worldsprite.setTexture(m_emptySqTexture);// sets floor tex
 	}
 	else if (m_isEmpty == true)
 	{
-		m_Worldsprite.setTexture(m_floorSqTexture);
+		m_Worldsprite.setTexture(m_floorSqTexture);// sets hole tex
 	}
 }
 void worldSquare::draw(sf::RenderWindow &t_window)
 {
 
-	t_window.draw(m_Worldsprite);
+	t_window.draw(m_Worldsprite);// draws blocks
 	
 }
 
@@ -90,41 +90,6 @@ void worldSquare::makeEmpty()
 	m_isEmpty = true;
 	m_isAWall = false;
 	m_isFloor = false;
-}
-
-void worldSquare::makeKicked(int t_newDirection)
-{
-	if (t_newDirection == NORTH)
-	{
-
-		m_isFloor = false;
-		m_isAWall = false;
-		m_isEmpty = false;
-		m_blockDirection = NORTH;
-	}
-	else if (t_newDirection == SOUTH)
-	{
-
-		m_isFloor = false;
-		m_isAWall = false;
-		m_isEmpty = false;
-		m_blockDirection = SOUTH;
-	}
-	else if (t_newDirection == EAST)
-	{
-		
-		m_isFloor = false;
-		m_isAWall = false;
-		m_isEmpty = false;
-		m_blockDirection = EAST;
-	}
-	else if (t_newDirection == WEST)
-	{
-		m_isFloor = false;
-		m_isAWall = false;
-		m_isEmpty = false;
-		m_blockDirection = WEST;
-	}
 }
 
 void worldSquare::makeAFloor()

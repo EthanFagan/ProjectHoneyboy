@@ -22,14 +22,13 @@ public:
 	worldSquare();
 	void update();
 	void draw(sf::RenderWindow &t_window); //if containsSquare is true draw the worldSqTexture  else draw emptySqTexture.
-	bool isAWall();
-	bool isEmpty();
-	bool isFloor();
+	bool isAWall(); // detects if block is a wall
+	bool isEmpty();// detects if block is a hole
+	bool isFloor();// detects if block is a floor
 	int  getDirection();
-	void makeAWall();
-	void makeAFloor();
-	void makeEmpty();
-	void makeKicked(int t_newDirection);
+	void makeAWall();// makes block a wall
+	void makeAFloor();// makes block a floor
+	void makeEmpty();// makes block a empty
 	void setPosition(sf::Vector2f t_newPos);
 	
 

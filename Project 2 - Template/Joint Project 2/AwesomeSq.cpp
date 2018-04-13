@@ -54,10 +54,10 @@ int AwesomeSq::getDirection()
 void AwesomeSq::update(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 {
 	timer++;
-	kick(t_blockArray);
-	animation();
+	kick(t_blockArray); // checks if player is kicking a block
+	animation();// animates player sprite
 	//---------------------------------------------------------
-	move(t_blockArray);
+	move(t_blockArray); // moves player if player is pressing movement keys
 }
 
 void AwesomeSq::setPosition(sf::Vector2f t_newPosition)
@@ -67,6 +67,7 @@ void AwesomeSq::setPosition(sf::Vector2f t_newPosition)
 
 void AwesomeSq::move(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 {
+	//----MOVES PLAYER UP---------
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && timer % 10 == 0)
 	{
 		if (t_blockArray[m_playerRow][m_playerCol -1].isAWall() == false && t_blockArray[m_playerRow][m_playerCol -1].isEmpty() == false)
@@ -75,7 +76,7 @@ void AwesomeSq::move(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 		}
 		m_playerDirection = NORTH;
 	}
-	//-------------------------------------------------------
+	//----MOVES PLAYER DOWN--------
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && timer % 10 == 0)
 	{
 		if (t_blockArray[m_playerRow][m_playerCol +1].isAWall() == false && t_blockArray[m_playerRow][m_playerCol +1].isEmpty() == false)
@@ -84,7 +85,7 @@ void AwesomeSq::move(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 		}
 		m_playerDirection = SOUTH;
 	}
-	//-------------------------------------------------------
+	//----MOVES PLAYER LEFT-------
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && timer % 10 == 0)
 	{
 		if (t_blockArray[m_playerRow -1][m_playerCol].isAWall() == false && t_blockArray[m_playerRow -1][m_playerCol].isEmpty() == false)
@@ -93,7 +94,7 @@ void AwesomeSq::move(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 		}
 		m_playerDirection = WEST;
 	}
-	//-------------------------------------------------------
+	//----MOVES PLAYER RIGHT------
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && timer % 10 == 0)
 	{
 		if (t_blockArray[m_playerRow +1][m_playerCol].isAWall() == false && t_blockArray[m_playerRow +1][m_playerCol].isEmpty() == false)
@@ -102,7 +103,7 @@ void AwesomeSq::move(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 		}
 		m_playerDirection = EAST;
 	}
-
+	//SETS PLAYERS CHANGED POSITION
 	setPosition(sf::Vector2f(m_playerRow * 32, m_playerCol * 32));
 	m_playerSprite.setPosition(m_playerPosition);
 }
@@ -111,6 +112,7 @@ void AwesomeSq::kick(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
+		// KICKS A BLOCK LEFT ONE SPACE IF BLOCK HAS ROOM TO MOVE
 		if (m_playerDirection == WEST && t_blockArray[m_playerRow - 1][m_playerCol].isAWall() == true)
 		{
 			if (t_blockArray[m_playerRow - 2][m_playerCol].isAWall() == false)
@@ -126,6 +128,7 @@ void AwesomeSq::kick(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 				}
 			}
 		}
+		// KICKS A BLOCK RIGHT ONE SPACE IF BLOCK HAS ROOM TO MOVE
 		else if (m_playerDirection == EAST && t_blockArray[m_playerRow + 1][m_playerCol].isAWall() == true)
 		{
 			if (t_blockArray[m_playerRow + 2][m_playerCol].isAWall() == false)
@@ -142,6 +145,7 @@ void AwesomeSq::kick(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 			}
 			
 		}
+		// KICKS A BLOCK DOWN ONE SPACE IF BLOCK HAS ROOM TO MOVE
 		else if (m_playerDirection == SOUTH && t_blockArray[m_playerRow][m_playerCol + 1].isAWall() == true)
 		{
 			if (t_blockArray[m_playerRow][m_playerCol + 2].isAWall() == false)
@@ -157,6 +161,7 @@ void AwesomeSq::kick(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 				}
 			}
 		}
+		// KICKS A BLOCK UP ONE SPACE IF BLOCK HAS ROOM TO MOVE
 		else if (m_playerDirection == NORTH && t_blockArray[m_playerRow ][m_playerCol - 1].isAWall() == true)
 		{
 			if (t_blockArray[m_playerRow][m_playerCol - 2].isAWall() == false)
@@ -179,21 +184,22 @@ void AwesomeSq::animation()
 {
 	if (timer % 10 == 0)
 	{
-		playerX += SPRITE_WIDTH;
+		playerX += SPRITE_WIDTH; // moves to the next frame of sprite sheet 6 times per second
 	}
 
 	if (timer >= MAX_TIMER)
 	{
-		timer = 0;
+		timer = 0;// resets timer every second
 	}
 
 	if (playerX >= PLAYER_SPRITE_SHEET_WIDTH)
 	{
-		playerX = 0;
+		playerX = 0;// restarts animation if animation is finished
 	}
 
 	m_playerSprite.setTextureRect(sf::IntRect(playerX, playerY, 32, 32));
 	//----------------------------------------------
+	//----CHANGES VISIBLE DIRECTION THE PLAYER IS FACING--
 	if (m_playerDirection == SOUTH)
 	{
 		playerY = 64;

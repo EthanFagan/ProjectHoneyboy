@@ -1,5 +1,7 @@
-﻿  Game.cpp
-c:\users\c00232277\documents\github\projecthoneyboy\project 2 - template\joint project 2\game.cpp(92): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-c:\users\c00232277\documents\github\projecthoneyboy\project 2 - template\joint project 2\game.cpp(213): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Joint Project 2.vcxproj -> C:\Users\c00232277\Documents\GitHub\ProjectHoneyboy\Project 2 - Template\Debug\Joint Project 2.exe
-  Joint Project 2.vcxproj -> C:\Users\c00232277\Documents\GitHub\ProjectHoneyboy\Project 2 - Template\Debug\Joint Project 2.pdb (Partial PDB)
+﻿  WorldSquare.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  Game.cpp
+  EvilSq.cpp
+  AwesomeSq.cpp
+  Joint Project 2.vcxproj -> C:\Users\Ethan\Documents\GitHub\ProjectHoneyboy\Project 2 - Template\Debug\Joint Project 2.exe

@@ -1,7 +1,7 @@
 // Name: Ethan Fagan
 // Login:C00232277
 // Date: 05/03/2018
-// Approximate time taken: 
+// Approximate time taken: 22 hours
 //---------------------------------------------------------------------------
 // Project description Template
 // ---------------------------------------------------------------------------
@@ -66,7 +66,7 @@ void Game::LoadContent()
 	//------------------------------------------------------
 
 	m_lives = 3;// sets the players total lives
-	m_currentLevel = CONGRATURATION;
+	m_currentLevel = LEVEL_THREE;
 	m_score = 0;
 	// set up the message string 
 	for (int i = 0; i < 2; i++)
@@ -98,9 +98,10 @@ void Game::run()
 
 
 	clock.restart();
-	setUpMaze();
-	setUpEnemies();
+	setUpMaze(); // sets up initial level blocks
+	setUpEnemies();// sets up inital enemies
 	
+	//----PREPARING TEXTS-----
 	m_message[0].setString("H O N E Y B O Y");
 	m_message[1].setString("Remaining enemies : " + std::to_string(m_amountOfEnemiesLeft));
 
@@ -152,18 +153,19 @@ void Game::update()
 			enemies[i].update(walls);// updates the enemies on screen
 		}
 		player.update(walls);// updates the player
-		deaths();
+		deaths(); // checks if player or an enemy has died
 		
 		m_message[1].setString("Remaining enemies : " + std::to_string(m_amountOfEnemiesLeft));
 	}
 	else
 	{
+		//----SETS UP OBJECTS FOR GAME OVER SCREEN---
 		m_message[1].setString("congrats, \nlife is all meaningless in the end\n.....press r to resart");
 		m_message[1].setPosition(sf::Vector2f(75, 20));
 		player.update(walls);// updates the player
 	}
 
-	levelComplete();
+	levelComplete();// checks if the player has completed level requirements
 }
 
 void Game::draw()
@@ -177,10 +179,11 @@ void Game::draw()
 		drawEnemies(window);
 
 		window.draw(m_message[0]);  // write message to the screen
-		window.draw(m_message[1]);
-		player.draw(window);
+		window.draw(m_message[1]);  
+		player.draw(window); // draw player
 		player.setPosition(sf::Vector2f(200, 200));
 	}
+	//---- DRAWS GAME OVER SCREEN -----
 	if (m_currentLevel == CONGRATURATION)
 	{
 		player.draw(window);
@@ -196,18 +199,19 @@ void Game::setUpMaze()
 	//----SETS UP MAZE------------------------------
 	if (m_currentLevel == LEVEL_ONE)
 	{
-		setUpLevel1();
+		setUpLevel1();// places blocks for level 1
 	}
 	else if (m_currentLevel == LEVEL_TWO)
 	{
-		setUpLevel2();
+		setUpLevel2();// places blocks for level 2
 	}
 	else if (m_currentLevel == LEVEL_THREE)
 	{
-		setUpLevel3();
+		setUpLevel3();// places blocks for level 3
 	}
 	for (int row = 0; row < MAX_ROWS; row++)
 	{
+		//----SETS BLOCK POSITIONS--------------
 		for (int col = 0; col < MAX_COL; col++)
 		{
 			walls[row][col].setPosition(sf::Vector2f(32 * row, 32 * col));
@@ -231,10 +235,12 @@ void Game::setUpLevel1()
 			{
 				walls[row][col].makeAWall();
 			}
+			//----SETS UP HOLES-----------------------------
 			else if (col == 5 && row == 6)
 			{
 				walls[row][col].makeEmpty();
 			}
+			//----SETS UP WALLS-----------------------------
 			else if (col == 1 && row == 9)
 			{
 				walls[row][col].makeAWall();
@@ -263,6 +269,7 @@ void Game::setUpLevel1()
 			{
 				walls[row][col].makeAWall();
 			}
+			//----MAKES ALL ELSE FLOORS---------------------
 			else
 			{
 				walls[row][col].makeAFloor();
@@ -286,18 +293,21 @@ void Game::setUpLevel2()
 			{
 				walls[row][col].makeAWall();
 			}
+			//----SETS UP WALLS------------------------------
 			else if (col == 2 && row == 2)
 			{
 				walls[row][col].makeAWall();
-			}
-			else if(col > 6 && col < 10)
-			{
-				walls[row][col].makeEmpty();
 			}
 			else if (col == 7 || row == 7)
 			{
 				walls[row][col].makeAWall();
 			}
+			//----SETS UP HOLES------------------------------
+			else if(col > 6 && col < 10)
+			{
+				walls[row][col].makeEmpty();
+			}
+			//----MAKES ALL ELSE INTO FLOORS-----------------
 			else
 			{
 				walls[row][col].makeAFloor();
@@ -321,6 +331,7 @@ void Game::setUpLevel3()
 			{
 				walls[row][col].makeAWall();
 			}
+			//----SETS UP HOLES------------------------------
 			else if(col == 2 && row > 2 && row < 11)
 			{
 				walls[row][col].makeEmpty();
@@ -338,10 +349,16 @@ void Game::setUpLevel3()
 				walls[row][col].makeEmpty();
 
 			}
-			else if (row == 6 && col > 4 && col < 8)
+			//----SETS UP WALLS--------------------------------
+			else if (row == 6 && col > 4 && col < 8 && col != 6)
 			{
 				walls[row][col].makeAWall();
 			}
+			else if (row == 5 && col == 6 || row == 7 && col == 6)
+			{
+				walls[row][col].makeAWall();
+			}
+			//----MAKES EVERYTHING ELSE A FLOOR-----------------
 			else
 			{
 				walls[row][col].makeAFloor();
@@ -515,6 +532,7 @@ void Game::drawMaze()
 {
 	for (int row = 0; row < MAX_ROWS; row++)
 	{
+		//----DRAWS ALL BLOCKS----
 		for (int col = 0; col < MAX_COL; col++)
 		{
 			walls[row][col].draw(window);
@@ -526,6 +544,7 @@ void Game::deaths()
 {
 	for (int i = 0; i < MAX_ENEMIES; i++)
 	{
+		//----RESETS LEVEL IF PLAYER COLLIDES WITH AN ENEMY----
 		if ((player.getRow() == enemies[i].getRow()) && (player.getcol() == enemies[i].getCol()) && enemies[i].getIsAlive() == true)
 		{
 			m_score = 0;
@@ -535,6 +554,7 @@ void Game::deaths()
 			player.setRow(1);
 			player.setCol(1);
 		}
+		//---- KILLS AN ENEMY IF PLAYER HAS HIT THEM WITH A BLOCK---
 		if (walls[enemies[i].getRow()][enemies[i].getCol()].isAWall() == true)
 		{
 			if (enemies[i].getIsAlive() == true)
@@ -554,6 +574,7 @@ void Game::changeLevel(int t_newLevel)
 
 void Game::levelComplete()
 {
+	//----STARTS LEVEL 2
 			if (m_currentLevel == LEVEL_ONE && m_score == 200)
 			{
 				m_score = 0;
@@ -563,6 +584,7 @@ void Game::levelComplete()
 				player.setRow(1);
 				player.setCol(1);
 			}
+			//----STARTS LEVEL 3
 			else if (m_currentLevel == LEVEL_TWO && m_score == 200)
 			{
 				m_score = 0;
@@ -572,11 +594,13 @@ void Game::levelComplete()
 				player.setRow(1);
 				player.setCol(1);
 			}
-			else if (m_currentLevel == LEVEL_THREE && m_score == 150)
+			// STARTS GAME OVER SCREEN
+			else if (m_currentLevel == LEVEL_THREE && m_score == 200)
 			{
 				m_score = 0;
 				m_currentLevel = CONGRATURATION;
 			}
+			// RESTARTS GAME
 			else if (m_currentLevel == CONGRATURATION && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 			{
 				m_message[1].setPosition(sf::Vector2f(125, 385));
@@ -611,7 +635,7 @@ void Game::drawEnemies(sf::RenderWindow &t_window)
 	{
 		if (enemies[i].getIsAlive() == true)
 		{
-			enemies[i].draw(t_window);
+			enemies[i].draw(t_window);// draws all enemies that are alive in the level
 		}
 	}
 }
