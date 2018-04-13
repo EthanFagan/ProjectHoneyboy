@@ -66,7 +66,7 @@ void Game::LoadContent()
 	//------------------------------------------------------
 
 	m_lives = 3;// sets the players total lives
-	m_currentLevel = LEVEL_THREE;
+	m_currentLevel = CONGRATURATION;
 	m_score = 0;
 	// set up the message string 
 	for (int i = 0; i < 2; i++)
@@ -160,7 +160,7 @@ void Game::update()
 	else
 	{
 		//----SETS UP OBJECTS FOR GAME OVER SCREEN---
-		m_message[1].setString("congrats, \nlife is all meaningless in the end\n.....press r to resart");
+		m_message[1].setString("congrats, \nlife is all meaningless in the end\n.....press r to restart");
 		m_message[1].setPosition(sf::Vector2f(75, 20));
 		player.update(walls);// updates the player
 	}
@@ -298,14 +298,14 @@ void Game::setUpLevel2()
 			{
 				walls[row][col].makeAWall();
 			}
-			else if (col == 7 || row == 7)
-			{
-				walls[row][col].makeAWall();
-			}
 			//----SETS UP HOLES------------------------------
 			else if(col > 6 && col < 10)
 			{
 				walls[row][col].makeEmpty();
+			}
+			else if (col == 7 || row == 7)
+			{
+				walls[row][col].makeAWall();
 			}
 			//----MAKES ALL ELSE INTO FLOORS-----------------
 			else

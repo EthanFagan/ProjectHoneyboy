@@ -1,7 +1,4 @@
-﻿  WorldSquare.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  Game.cpp
-  EvilSq.cpp
-  AwesomeSq.cpp
+﻿  Game.cpp
+c:\users\ethan\documents\github\projecthoneyboy\project 2 - template\joint project 2\game.cpp(92): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\ethan\documents\github\projecthoneyboy\project 2 - template\joint project 2\game.cpp(217): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Joint Project 2.vcxproj -> C:\Users\Ethan\Documents\GitHub\ProjectHoneyboy\Project 2 - Template\Debug\Joint Project 2.exe
