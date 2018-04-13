@@ -43,6 +43,9 @@ public:
 	int m_amountOfEnemiesLeft = 0;
 	int m_currentLevel;
 	int m_lives;
+	int m_score;
+
+	float m_scale = 1.0;
 
 public:	  // declaration of member functions	
 	Game();  // default constructor

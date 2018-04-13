@@ -17,7 +17,7 @@ const int EAST = 3;
 const int WEST = 4;
 
 //--- Levels----------
-const int GAME_OVER = 0;
+const int CONGRATURATION = 0;
 const int LEVEL_ONE = 1;
 const int LEVEL_TWO = 2;
 const int LEVEL_THREE = 3;

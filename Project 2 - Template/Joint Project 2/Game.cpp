@@ -66,8 +66,8 @@ void Game::LoadContent()
 	//------------------------------------------------------
 
 	m_lives = 3;// sets the players total lives
-	m_currentLevel = LEVEL_ONE;
-	
+	m_currentLevel = CONGRATURATION;
+	m_score = 0;
 	// set up the message string 
 	for (int i = 0; i < 2; i++)
 	{
@@ -137,23 +137,33 @@ void Game::run()
 void Game::update()
 // This function takes the keyboard input and updates the game world
 {
-	// update any game variables here ...
-	for (int row = 0; row < MAX_ROWS; row++)
+	if (m_currentLevel != CONGRATURATION)
 	{
-		for (int col = 0; col < MAX_COL; col++)
+		// update any game variables here ...
+		for (int row = 0; row < MAX_ROWS; row++)
 		{
-			walls[row][col].update();// updates each wall on screen
+			for (int col = 0; col < MAX_COL; col++)
+			{
+				walls[row][col].update();// updates each wall on screen
+			}
 		}
+		for (int i = 0; i < MAX_ENEMIES; i++)
+		{
+			enemies[i].update(walls);// updates the enemies on screen
+		}
+		player.update(walls);// updates the player
+		deaths();
+		
+		m_message[1].setString("Remaining enemies : " + std::to_string(m_amountOfEnemiesLeft));
 	}
-	for (int i = 0; i < MAX_ENEMIES; i++)
+	else
 	{
-		enemies[i].update(walls);// updates the enemies on screen
+		m_message[1].setString("congrats, \nlife is all meaningless in the end\n.....press r to resart");
+		m_message[1].setPosition(sf::Vector2f(75, 20));
+		player.update(walls);// updates the player
 	}
-	player.update(walls);// updates the player
-	deaths();
-	m_message[1].setString("Remaining enemies : " + std::to_string(m_amountOfEnemiesLeft));
-	
 
+	levelComplete();
 }
 
 void Game::draw()
@@ -161,7 +171,7 @@ void Game::draw()
 {
 	// Clear the screen and draw your game sprites
 	window.clear();
-	if (m_currentLevel != GAME_OVER)
+	if (m_currentLevel != CONGRATURATION)
 	{
 		drawMaze();
 		drawEnemies(window);
@@ -170,6 +180,11 @@ void Game::draw()
 		window.draw(m_message[1]);
 		player.draw(window);
 		player.setPosition(sf::Vector2f(200, 200));
+	}
+	if (m_currentLevel == CONGRATURATION)
+	{
+		player.draw(window);
+		window.draw(m_message[1]);
 	}
 	
 	player.setPosition(sf::Vector2f(200, 200));
@@ -271,6 +286,18 @@ void Game::setUpLevel2()
 			{
 				walls[row][col].makeAWall();
 			}
+			else if (col == 2 && row == 2)
+			{
+				walls[row][col].makeAWall();
+			}
+			else if(col > 6 && col < 10)
+			{
+				walls[row][col].makeEmpty();
+			}
+			else if (col == 7 || row == 7)
+			{
+				walls[row][col].makeAWall();
+			}
 			else
 			{
 				walls[row][col].makeAFloor();
@@ -294,6 +321,27 @@ void Game::setUpLevel3()
 			{
 				walls[row][col].makeAWall();
 			}
+			else if(col == 2 && row > 2 && row < 11)
+			{
+				walls[row][col].makeEmpty();
+			}
+			else if (col == 10 && row > 1 && row < 10)
+			{
+				walls[row][col].makeEmpty();
+			}
+			else if (row == 10 && col > 4 && col < 8)
+			{
+				walls[row][col].makeEmpty();
+			}
+			else if (row == 2 && col > 4 && col < 8)
+			{
+				walls[row][col].makeEmpty();
+
+			}
+			else if (row == 6 && col > 4 && col < 8)
+			{
+				walls[row][col].makeAWall();
+			}
 			else
 			{
 				walls[row][col].makeAFloor();
@@ -307,6 +355,8 @@ void Game::setUpEnemies()
 {
 	for (int i = 0; i < MAX_ENEMIES; i++)
 	{
+		if (m_currentLevel == LEVEL_ONE)
+		{
 			if (i == 0)
 			{
 				enemies[i].setCol(6);
@@ -355,6 +405,109 @@ void Game::setUpEnemies()
 				enemies[i].setIsAlive();
 				m_amountOfEnemiesLeft++;
 			}
+		}
+		if (m_currentLevel == LEVEL_TWO)
+		{
+			if (i == 0)
+			{
+				enemies[i].setCol(6);
+				enemies[i].setRow(3);
+				enemies[i].setDirection(SOUTH);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 1)
+			{
+				enemies[i].setCol(1);
+				enemies[i].setRow(11);
+				enemies[i].setDirection(WEST);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 2)
+			{
+				enemies[i].setCol(3);
+				enemies[i].setRow(4);
+				enemies[i].setDirection(EAST);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 3)
+			{
+				enemies[i].setCol(11);
+				enemies[i].setRow(6);
+				enemies[i].setDirection(WEST);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 4)
+			{
+				enemies[i].setCol(6);
+				enemies[i].setRow(9);
+				enemies[i].setDirection(EAST);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 5)
+			{
+				enemies[i].setCol(11);
+				enemies[i].setRow(4);
+				enemies[i].setDirection(SOUTH);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+		}
+		if (m_currentLevel == LEVEL_THREE)
+		{
+			if (i == 0)
+			{
+				enemies[i].setCol(11);
+				enemies[i].setRow(11);
+				enemies[i].setDirection(SOUTH);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 1)
+			{
+				enemies[i].setCol(1);
+				enemies[i].setRow(11);
+				enemies[i].setDirection(WEST);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 2)
+			{
+				enemies[i].setCol(11);
+				enemies[i].setRow(1);
+				enemies[i].setDirection(EAST);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 3)
+			{
+				enemies[i].setCol(7);
+				enemies[i].setRow(6);
+				enemies[i].setDirection(WEST);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 4)
+			{
+				enemies[i].setCol(7);
+				enemies[i].setRow(9);
+				enemies[i].setDirection(EAST);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+			if (i == 5)
+			{
+				enemies[i].setCol(11);
+				enemies[i].setRow(4);
+				enemies[i].setDirection(SOUTH);
+				enemies[i].setIsAlive();
+				m_amountOfEnemiesLeft++;
+			}
+		}
 	}
 }
 
@@ -375,10 +528,10 @@ void Game::deaths()
 	{
 		if ((player.getRow() == enemies[i].getRow()) && (player.getcol() == enemies[i].getCol()) && enemies[i].getIsAlive() == true)
 		{
+			m_score = 0;
 			m_amountOfEnemiesLeft = 0;
-			m_currentLevel = LEVEL_TWO;
 			setUpEnemies();
-			setUpMaze();
+			setUpMaze();  
 			player.setRow(1);
 			player.setCol(1);
 		}
@@ -387,6 +540,7 @@ void Game::deaths()
 			if (enemies[i].getIsAlive() == true)
 			{
 				m_amountOfEnemiesLeft--;
+				m_score += 50;
 				enemies[i].die();
 			}
 		}
@@ -400,6 +554,39 @@ void Game::changeLevel(int t_newLevel)
 
 void Game::levelComplete()
 {
+			if (m_currentLevel == LEVEL_ONE && m_score == 200)
+			{
+				m_score = 0;
+				m_currentLevel = LEVEL_TWO;
+				setUpEnemies();
+				setUpMaze();
+				player.setRow(1);
+				player.setCol(1);
+			}
+			else if (m_currentLevel == LEVEL_TWO && m_score == 200)
+			{
+				m_score = 0;
+				m_currentLevel = LEVEL_THREE;
+				setUpEnemies();
+				setUpMaze();
+				player.setRow(1);
+				player.setCol(1);
+			}
+			else if (m_currentLevel == LEVEL_THREE && m_score == 150)
+			{
+				m_score = 0;
+				m_currentLevel = CONGRATURATION;
+			}
+			else if (m_currentLevel == CONGRATURATION && sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+			{
+				m_message[1].setPosition(sf::Vector2f(125, 385));
+				m_score = 0;
+				m_currentLevel = LEVEL_ONE;
+				setUpEnemies();
+				setUpMaze();
+				player.setRow(1);
+				player.setCol(1);
+			}
 }
 
 void Game::gameOver()

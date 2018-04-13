@@ -11,7 +11,7 @@ class AwesomeSq
 	sf::Texture m_playerTexture;	   //texture for awesomeSquare player
 	sf::Sprite m_playerSprite; 	   //sprite used to represent awesomeSquare player
 	sf::Vector2f m_playerPosition;
-	int m_score;		  //players score
+	
 	int m_lives;		  //contains players lives
 	int m_playerDirection;	  //the direction the player is facing in
 	
@@ -38,7 +38,7 @@ public:
 	void move(worldSquare t_blockArray[MAX_ROWS][MAX_COL]); //moves the player via keyboard input– changes its row or column
 	void kick(worldSquare t_blockArray[MAX_ROWS][MAX_COL]); //a function that checks if the player is trying to kick a square
 	void animation();
-	void die();//if lives 0 game over & call respawn function else take away 1 life
-	void respawn(); //causes the player to reappear on the maze at starting position
+
+	sf::Sprite getBody();
 
 };

@@ -69,7 +69,7 @@ void AwesomeSq::move(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && timer % 10 == 0)
 	{
-		if (t_blockArray[m_playerRow][m_playerCol -1].isAWall() == false)
+		if (t_blockArray[m_playerRow][m_playerCol -1].isAWall() == false && t_blockArray[m_playerRow][m_playerCol -1].isEmpty() == false)
 		{
 			m_playerCol -= 1;
 		}
@@ -78,7 +78,7 @@ void AwesomeSq::move(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 	//-------------------------------------------------------
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && timer % 10 == 0)
 	{
-		if (t_blockArray[m_playerRow][m_playerCol +1].isAWall() == false)
+		if (t_blockArray[m_playerRow][m_playerCol +1].isAWall() == false && t_blockArray[m_playerRow][m_playerCol +1].isEmpty() == false)
 		{
 			m_playerCol += 1;
 		}
@@ -87,7 +87,7 @@ void AwesomeSq::move(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 	//-------------------------------------------------------
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && timer % 10 == 0)
 	{
-		if (t_blockArray[m_playerRow -1][m_playerCol].isAWall() == false)
+		if (t_blockArray[m_playerRow -1][m_playerCol].isAWall() == false && t_blockArray[m_playerRow -1][m_playerCol].isEmpty() == false)
 		{
 			m_playerRow -= 1;
 		}
@@ -96,7 +96,7 @@ void AwesomeSq::move(worldSquare t_blockArray[MAX_ROWS][MAX_COL])
 	//-------------------------------------------------------
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && timer % 10 == 0)
 	{
-		if (t_blockArray[m_playerRow +1][m_playerCol].isAWall() == false)
+		if (t_blockArray[m_playerRow +1][m_playerCol].isAWall() == false && t_blockArray[m_playerRow +1][m_playerCol].isEmpty() == false)
 		{
 			m_playerRow += 1;
 		}
@@ -210,4 +210,9 @@ void AwesomeSq::animation()
 	{
 		playerY = 96;
 	}
+}
+
+sf::Sprite AwesomeSq::getBody()
+{
+	return m_playerSprite;
 }
