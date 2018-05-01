@@ -66,7 +66,7 @@ void Game::LoadContent()
 	//------------------------------------------------------
 
 	m_lives = 3;// sets the players total lives
-	m_currentLevel = CONGRATURATION;
+	m_currentLevel = LEVEL_ONE;
 	m_score = 0;
 	// set up the message string 
 	for (int i = 0; i < 2; i++)
